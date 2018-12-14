@@ -28,7 +28,7 @@
 
 	chosen {
 		bootargs = "";
-		stdout-path = "serial1:115200n8";
+		stdout-path = "serial0:115200n8";
 	};
 
 	usb_phy0: phy0 {

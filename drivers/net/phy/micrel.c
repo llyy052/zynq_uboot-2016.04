@@ -16,6 +16,7 @@
 #include <phy.h>
 
 DECLARE_GLOBAL_DATA_PTR;
+#define DEBUG
 
 static struct phy_driver KSZ804_driver = {
 	.name = "Micrel KSZ804",
@@ -182,7 +183,7 @@ static int ksz90xx_startup(struct phy_device *phydev)
 {
 	unsigned phy_ctl;
 	int ret;
-
+	puts("ksz90xx_startup\r\n");
 	ret = genphy_update_link(phydev);
 	if (ret)
 		return ret;
@@ -407,7 +408,7 @@ static int ksz9031_of_config(struct phy_device *phydev)
 		{ MII_KSZ9031_EXT_RGMII_CLOCK_SKEW, 2, ksz9031_clk_grp, 2 },
 	};
 	int i, ret = 0;
-
+	puts("ksz9031_of_config1\r\n");
 	for (i = 0; i < ARRAY_SIZE(ofcfg); i++)
 		ret = ksz90x1_of_config_group(phydev, &(ofcfg[i]));
 		if (ret)
@@ -418,6 +419,7 @@ static int ksz9031_of_config(struct phy_device *phydev)
 #else
 static int ksz9031_of_config(struct phy_device *phydev)
 {
+	puts("ksz9031_of_config2\r\n");
 	return 0;
 }
 #endif
@@ -426,6 +428,7 @@ static int ksz9031_of_config(struct phy_device *phydev)
 int ksz9031_phy_extended_write(struct phy_device *phydev,
 			       int devaddr, int regnum, u16 mode, u16 val)
 {
+	puts("ksz9031_phy_extended_write\r\n");
 	/*select register addr for mmd*/
 	phy_write(phydev, MDIO_DEVAD_NONE,
 		  MII_KSZ9031_MMD_ACCES_CTRL, devaddr);
@@ -443,6 +446,8 @@ int ksz9031_phy_extended_write(struct phy_device *phydev,
 int ksz9031_phy_extended_read(struct phy_device *phydev, int devaddr,
 			      int regnum, u16 mode)
 {
+	puts("ksz9031_phy_extended_read\r\n");
+
 	phy_write(phydev, MDIO_DEVAD_NONE,
 		  MII_KSZ9031_MMD_ACCES_CTRL, devaddr);
 	phy_write(phydev, MDIO_DEVAD_NONE,
@@ -469,6 +474,7 @@ static int ksz9031_phy_extwrite(struct phy_device *phydev, int addr,
 static int ksz9031_config(struct phy_device *phydev)
 {
 	int ret;
+	puts("ksz9031_config\r\n");
 	ret = ksz9031_of_config(phydev);
 	if (ret)
 		return ret;
@@ -480,7 +486,8 @@ static struct phy_driver ksz9031_driver = {
 	.uid  = 0x221620,
 	.mask = 0xfffff0,
 	.features = PHY_GBIT_FEATURES,
-	.config   = &ksz9031_config,
+	//.config   = &ksz9031_config,
+	.config   = &genphy_config,
 	.startup  = &ksz90xx_startup,
 	.shutdown = &genphy_shutdown,
 	.writeext = &ksz9031_phy_extwrite,
@@ -514,6 +521,7 @@ static struct phy_driver ksz886x_driver = {
 
 int phy_micrel_init(void)
 {
+	printf("%s\r\n",__FUNCTION__);
 	phy_register(&KSZ804_driver);
 	phy_register(&KSZ8031_driver);
 	phy_register(&KSZ8051_driver);

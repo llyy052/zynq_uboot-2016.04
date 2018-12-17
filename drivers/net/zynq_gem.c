@@ -28,7 +28,7 @@
 #include <clk.h>
 
 DECLARE_GLOBAL_DATA_PTR;
-#define DEBUG
+
 /* Bit/mask specification */
 #define ZYNQ_GEM_PHYMNTNC_OP_MASK	0x40020000 /* operation mask bits */
 #define ZYNQ_GEM_PHYMNTNC_OP_R_MASK	0x20000000 /* read operation */
@@ -373,8 +373,6 @@ static int zynq_gem_init(struct udevice *dev)
 	struct zynq_gem_regs *regs = priv->iobase;
 	struct emac_bd *dummy_tx_bd = &priv->tx_bd[TX_FREE_DESC];
 	struct emac_bd *dummy_rx_bd = &priv->tx_bd[TX_FREE_DESC + 2];
-	
-	puts("zynq_gem_init\r\n");
 
 	if (!priv->init) {
 		/* Disable all interrupts */

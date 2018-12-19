@@ -201,6 +201,22 @@
 /* enable preboot to be loaded before CONFIG_BOOTDELAY */
 #define CONFIG_PREBOOT
 
+#define TFTP_LOAD_TO_MMC_FAT \
+		"tftp_load_to_mmc_fat="  \
+		"tftpboot ${loadbit_addr} ${bitstream_image} && " \
+		"fatwrite mmc 0 ${loadbit_addr} ${bitstream_image} ${filesize} && "  \
+		"sleep 1; "  \
+		"tftpboot ${devicetree_load_address} ${devicetree_image} && " \
+		"fatwrite mmc 0 ${devicetree_load_address} ${devicetree_image} ${filesize} && "  \
+		"sleep 1; "  \
+		"tftpboot ${kernel_load_address} ${kernel_image} && "  \
+		"fatwrite mmc 0 ${kernel_load_address} ${kernel_image} ${filesize} && "  \
+		"sleep 1; "  \
+		"tftpboot ${ramdisk_load_address} ${ramdisk_image} &&"  \
+		"fatwrite mmc 0 ${ramdisk_load_address} ${ramdisk_image} ${filesize} && "  \
+		"\0"
+
+
 /* Default environment */
 #ifndef CONFIG_EXTRA_ENV_SETTINGS
 #define CONFIG_EXTRA_ENV_SETTINGS	\
@@ -319,7 +335,8 @@
 		"tftpboot 0x100000 ${boot_image} && " \
 		"zynqrsa 0x100000 && " \
 		"bootm ${kernel_load_address} ${ramdisk_load_address} ${devicetree_load_address}\0" \
-		DFU_ALT_INFO
+		DFU_ALT_INFO \
+		TFTP_LOAD_TO_MMC_FAT
 #endif
 
 /* default boot is according to the bootmode switch settings */

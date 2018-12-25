@@ -230,7 +230,7 @@
 	"ramdisk_load_address=0x4000000\0"	\
 	"devicetree_image=devicetree.dtb\0"	\
 	"devicetree_load_address=0x2000000\0"	\
-	"bitstream_image=7z020.bit\0"	\
+	"bitstream_image=top7z020.bit\0"	\
 	"boot_image=BOOT.bin\0"	\
 	"loadbit_addr=0x100000\0"	\
 	"loadbootenv_addr=0x2000000\0" \
